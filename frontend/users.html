@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>All Users</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width:700px; margin:40px auto; padding:0 16px; background-color: rgb(157, 240, 174);}
+        form { display:grid; gap:10px; }
+        label { font-weight:600; }
+        input, textarea, select { padding:8px; font-size:14px; width:100%; box-sizing:border-box; }
+        .row { display:flex; gap:10px; }
+        .row > * { flex:1; }
+        .error { color:#b00020; }
+        .success { color:#0a7a07; }
+        button { padding:10px 16px; font-size:16px; cursor:pointer; }
+    </style>
+</head>
+<body>
+
+<h2>Registered Users</h2>
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>DOB</th>
+            <th>Gender</th>
+            <th>Address</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="userTable"></tbody>
+</table>
+<br>
+<button onclick="window.location.href='login.html'">Back</button>
+<script>
+fetch("../backend/get_users.php")
+    .then(res => res.json())
+    .then(data => {
+        let rows = "";
+        data.forEach(u => {
+            rows += `<tr>
+                        <td>${u.id}</td>
+                        <td>${u.first_name}</td>
+                        <td>${u.email}</td>
+                        <td>${u.phone}</td>
+                        <td>${u.dob}</td>
+                        <td>${u.gender}</td>
+                        <td>${u.address}</td>
+                        <td>
+                            <a href="update.html?id=${u.id}">Edit</a>
+                            <a href="../backend/delete.php?id=${u.id}" onclick="return confirm('Delete user?')">Delete</a>
+                        </td>
+                    </tr>`;
+        });
+        document.getElementById("userTable").innerHTML = rows;
+    });
+</script>
+
+</body>
+</html>
